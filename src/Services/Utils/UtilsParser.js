@@ -5,7 +5,7 @@ const {
 const {
   RequestRuntimeError,
 } = require('../../Request/RequestErrors');
-
+const referenceDataSearchRespnseRequired = require('../../reference-data-search-response-required');
 
 function currencyConvertParse(json) {
   try {
@@ -57,6 +57,11 @@ function dataTypeParse(json) {
   return json;
 }
 
+function dataSearchParse(json){
+  console.log(json);
+  return json;  
+}
+
 const errorHandler = function (rsp) {
   let errorInfo;
   let code;
@@ -77,4 +82,5 @@ module.exports = {
   UTILS_ERROR: errorHandler,
   CURRENCY_CONVERSION: currencyConvertParse,
   REFERENCE_DATATYPE: dataTypeParse,
+  REFERENCE_DATASEARCHTYPE: dataSearchParse,
 };

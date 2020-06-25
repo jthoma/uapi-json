@@ -35,5 +35,16 @@ module.exports = function (settings) {
       debug,
       options
     ),
+    referenceDataSearch: uApiRequest(
+      config.UtilService.url,
+      auth,
+      templates.referenceDataSearch,
+      'util:ReferenceDataSearchRsp',
+      UtilsValidator.REFERENCE_DATASEARCHTYPE,
+      UtilsParser.UTILS_ERROR,
+      UtilsParser.REFERENCE_DATASEARCHTYPE,
+      debug,
+      options
+    ),
   };
 };

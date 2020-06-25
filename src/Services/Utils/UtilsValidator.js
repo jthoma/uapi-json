@@ -1,5 +1,6 @@
 const { UtilsValidationError } = require('./UtilsErrors');
 const referenceDataTypes = require('../../reference-data-types');
+const referenceDataSearchTypes = require('../../reference-data-search-types');
 
 function Validator(params) {
   this.params = params;
@@ -28,21 +29,32 @@ Validator.prototype.currencies = function () {
   return this;
 };
 
+function referenceDataCheck(params, validItems){
+  if (Object.prototype.toString.call(params.dataType) !== '[object String]') {
+    throw new UtilsValidationError.DataTypeMissing(params);
+  }
+
+  if (params.dataType.length <= 0) {
+    throw new UtilsValidationError.DataTypeMissing(params);
+  }
+
+  if (!validItems.includes(params.dataType)) {
+    throw new UtilsValidationError.DataTypeMissing(params);
+  }
+}
+
 Validator.prototype.datatype = function () {
-  if (Object.prototype.toString.call(this.params.dataType) !== '[object String]') {
-    throw new UtilsValidationError.DataTypeMissing(this.params);
-  }
-
-  if (this.params.dataType.length <= 0) {
-    throw new UtilsValidationError.DataTypeMissing(this.params);
-  }
-
-  if (!referenceDataTypes.includes(this.params.dataType)) {
-    throw new UtilsValidationError.DataTypeMissing(this.params);
-  }
+  referenceDataCheck(this.params, referenceDataTypes);
 
   return this;
 };
+
+Validator.prototype.dataSearchtype = function () {
+  referenceDataCheck(this.params, referenceDataSearchTypes);
+
+  return this;
+};
+
 
 module.exports = {
   CURRENCY_CONVERSION(params) {
@@ -53,6 +65,11 @@ module.exports = {
   REFERENCE_DATATYPE(params) {
     return new Validator(params)
       .datatype()
+      .end();
+  },
+  REFERENCE_DATASEARCHTYPE(params) {
+    return new Validator(params)
+      .dataSearchtype()
       .end();
   },
 };
